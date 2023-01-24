@@ -4,5 +4,5 @@ export const COLORS = {
   primary: "#373B69",
   secondary: "#13688C",
   tertiary: "#83CFDF",
-  functionnal_grey: "#708ED2",
+  functionnalGrey: "#708ED2",
 };

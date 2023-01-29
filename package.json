@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://gitlab.com/G.Christophe/find-a-movie/issues"
   },
-  "homepage": "https://gitlab.com/G.Christophe/find-a-movie#readme"
+  "homepage": "https://gitlab.com/G.Christophe/find-a-movie#readme",
+  "dependencies": {
+    "pg": "^8.9.0"
+  }
 }

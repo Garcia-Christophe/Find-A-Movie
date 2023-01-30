@@ -32,34 +32,45 @@ main {
   width: 100%;
 }
 
-.movie-info {
+.movie-info1 {
   color: white;
   display: flex;
   justify-content: space-between;
+  align-items: top;
   padding: 0.5rem 1rem 1rem;
   letter-spacing: 1px;
 }
 
-.movie-info h3 {
+.movie-info2 {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: top;
+  padding: 0.5rem 1rem 1rem;
+  letter-spacing: 1px;
+}
+
+.movie-info1 h3 {
   margin: 0;
 }
 
-.movie-info span {
+.movie-info1 span {
   background-color: darkblue;
   border-radius: 3px;
   font-weight: bold;
   padding: 0.25rem 0.5rem;
+  height: fit-content;
 }
 
-.movie-info span.green {
+.movie-info1 span.green {
   color: green;
 }
 
-.movie-info span.orange {
+.movie-info1 span.orange {
   color: orange;
 }
 
-.movie-info span.red {
+.movie-info1 span.red {
   color: red;
 }
 

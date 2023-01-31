@@ -51,13 +51,13 @@ function getMovieHtml(movie, director, runtime) {
             <span>${director}</span>
             <span">${runtime}</span>
           </div>
-          <div class="overview">
+        </div>
+        <div class="overview">
             <h3>Release date:</h3>
             <p>${movie.release_date}</p>
             <h3>Overview:</h3>
             <p>${movie.overview}</p>
           </div>
-        </div>
       </div>`;
 }
 

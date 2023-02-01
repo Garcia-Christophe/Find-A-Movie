@@ -25,9 +25,6 @@ app.post("/login", function (req, res) {
             }
         })
         res.send({res : found, login : login})
-
-
-        console.log(login + " " + passwd + " " + data)
     })
 })
 
@@ -36,8 +33,31 @@ app.post("/get_favori", function(req, res) {
         database.getFavori(req.body.login, resolve, reject);
     }).then((data) => {
         data.rows.map(favori => {
-            console.log(JSON.stringify(favori));
         })
         res.send({listFavori : data.rows});
+    })
+})
+
+app.post("/del_favori", function(req, res) {
+    new Promise((resolve, reject) => {
+        database.delFavori(req.body.login, req.body.idFilm, resolve, reject);
+    }).then((data) => {
+        res.send({});
+    })
+})
+
+app.post("/add_favori", function(req, res) {
+    new Promise((resolve, reject) => {
+        database.addFavori(req.body.login, req.body.idFilm, resolve, reject);
+    }).then((data) => {
+        res.send({});
+    })
+})
+
+app.post("/modif_passwd", function(req, res) {
+    new Promise((resolve, reject) => {
+        database.updateUserPasswd(req.body.login, req.body.passwd, resolve, reject);
+    }).then((data) => {
+        res.send({});
     })
 })

@@ -8,7 +8,6 @@
 <body>
     <script>
         function connection() {
-            console.log("ok")
             let login = document.getElementById("login").value;
             let mdp = document.getElementById("passwd").value;
             $.ajax({
@@ -21,7 +20,6 @@
                 dataType : "json",
                 success : function(data) {
 
-                    console.log("data = "+JSON.stringify(data))
                     // message à afficher
 
                     if (data.res) {
@@ -30,7 +28,6 @@
                         document.getElementById("connection").hidden = true;
                         document.getElementById("connecte").hidden = false;
                         sessionStorage.setItem("login", data.login);
-                        console.log(JSON.stringify(sessionStorage))
                         getFavori()
                     }
                     else {
@@ -51,15 +48,68 @@
                 dataType : "json",
                 success : function(data) {
 
-                    console.log("data = "+JSON.stringify(data))
                     let listFavori = document.getElementById("favoris")
                     listFavori.innerHTML = "";
                     data.listFavori.map(favori => {
-                        console.log(JSON.stringify(favori))
                         let li = document.createElement("li")
                         li.innerText = favori.idfilm
+                        li.id = favori.idfilm
+                        let button = document.createElement("button")
+                        button.innerText = "suppr"
+                        button.addEventListener("click", () => {
+                            sessionStorage.setItem("film", favori.idfilm)
+                            delFavori()
+                        })
+                        li.appendChild(button)
                         listFavori.appendChild(li)
                     })
+                }
+            })
+        }
+
+        function addFavori() {
+            let film = document.getElementById("add").value
+            $.ajax({
+                method : "post",
+                url : "add_favori",
+                data : {
+                    login : sessionStorage.getItem("login"),
+                    idFilm : film,
+                },
+                dataType : "json",
+                success : function(data) {
+                    getFavori()
+                }
+            })
+        }
+
+        function delFavori() {
+            $.ajax({
+                method : "post",
+                url : "del_favori",
+                data : {
+                    login : sessionStorage.getItem("login"),
+                    idFilm : sessionStorage.getItem("film"),
+                },
+                dataType : "json",
+                success : function(data) {
+                    sessionStorage.removeItem("film")
+                    getFavori()
+                }
+            })
+        }
+
+        function modifPasswd() {
+            $.ajax({
+                method : "post",
+                url : "modif_passwd",
+                data : {
+                    login : sessionStorage.getItem("login"),
+                    passwd : document.getElementById("modif_passwd").value,
+                },
+                dataType : "json",
+                success : function(data) {
+                    console.log("modifier")
                 }
             })
         }
@@ -69,6 +119,8 @@
             document.getElementById("connecte").hidden = true;
             sessionStorage.removeItem("login")
         }
+
+        sessionStorage.clear()
     </script>
     <div id="connection">
         <label>login:</label>
@@ -79,8 +131,14 @@
         <p id="mess"></p>
     </div>
     <div id="connecte" hidden="true">
-        <ul id="favoris"></ul>
         <button onclick="deconnection()">deconnection</button>
+        <ul id="favoris"></ul>
+        <label>ajouter un film</label>
+        <input id="add"/>
+        <button onclick="addFavori()">ajouter</button><br/>
+        <label>modification du mot de passe</label>
+        <input id="modif_passwd"/>
+        <button onclick="modifPasswd()">modifier</button><br/>
     </div>
 </body>
 </html>

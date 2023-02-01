@@ -4,11 +4,20 @@ const API_CRITERIA = "short_by=popularity.desc&page=1";
 const API_KEY_AND_CRITERIA = `${API_KEY}&${API_CRITERIA}`;
 const API_IMG_URL = "https://image.tmdb.org/t/p/w1280/";
 
+const form = document.getElementById("form");
+const search = document.getElementById("search");
+
+var tabIdMovie = [];
+
 // Get the director of a movie
 async function getDirector(id) {
   const response = await fetch(`${API_URL}movie/${id}/credits?${API_KEY}`);
   const data = await response.json();
-  let director = data.crew.find(({ job }) => job === "Director").name;
+  let director = "";
+  let dataDirector = data.crew.find(({ job }) => job === "Director");
+  if (dataDirector !== undefined) {
+    director = dataDirector.name;
+  }
   return director;
 }
 
@@ -90,42 +99,86 @@ async function getMovies() {
 }
 
 // Get the list of movies by its name
-async function getMovieByName(name) {
+async function getMovieByName(name, mainHtml) {
   const response = await fetch(
     `${API_URL}search/movie?${API_KEY_AND_CRITERIA}&query=${name}`
   );
   const data = await response.json();
-  console.log(data.results);
-}
 
-// Get a list of actors by their name
-async function getActor(name) {
-  const response = await fetch(
-    `${API_URL}search/person?${API_KEY_AND_CRITERIA}&query=${name}`
-  );
-  const data = await response.json();
-  console.log(data.results);
+  let directors = [];
+  let runtimes = [];
+  for (const movie of data.results) {
+    let director = await getDirector(movie.id);
+    let runtime = await getRuntime(movie.id);
+    directors.push(director);
+    runtimes.push(runtime);
+  }
+
+  // Create the html for each movie
+  let main = mainHtml;
+  for (let i = 0; i < data.results.length; i++) {
+    if (!tabIdMovie.includes(data.results[i].id)) {
+      tabIdMovie.push(data.results[i].id);
+      main += getMovieHtml(data.results[i], directors[i], runtimes[i]);
+    }
+  }
+  return main;
 }
 
 // Get the list of movies by the name of a person of the cast
-async function getMovieByActor(name) {
+async function getMovieByActor(name, mainHtml) {
+  let main = mainHtml;
   const response = await fetch(
     `${API_URL}search/person?${API_KEY_AND_CRITERIA}&query=${name}`
   );
-  var movies = [];
-  response.json().then((data) => {
-    data.results.forEach((actor) => {
-      fetch(
-        `${API_URL}discover/movie?${API_KEY_AND_CRITERIA}&with_cast=${actor.id}`
-      ).then((response) => {
-        response.json().then((data) => {
-          movies.push(data.results);
-        });
-      });
-    });
-  });
-  console.log(movies);
+
+  const actors = await response.json();
+
+  for (let i = 0; i < actors.results.length; i++) {
+    const res = await fetch(
+      `${API_URL}discover/movie?${API_KEY_AND_CRITERIA}&with_cast=${actors.results[i].id}`
+    );
+
+    const movies = await res.json();
+
+    let directors = [];
+    let runtimes = [];
+    for (const movie of movies.results) {
+      let director = await getDirector(movie.id);
+      let runtime = await getRuntime(movie.id);
+      directors.push(director);
+      runtimes.push(runtime);
+    }
+
+    for (let j = 0; j < movies.results.length; j++) {
+      if (!tabIdMovie.includes(movies.results[j].id)) {
+        tabIdMovie.push(movies.results[j].id);
+        main += getMovieHtml(movies.results[j], directors[j], runtimes[j]);
+      }
+    }
+  }
+  return main;
+  //affichage par acteur et réalisateur
+}
+
+async function searchMovies(searchT) {
+  let mainHtml = "";
+  tabIdMovie = [];
+  mainHtml = await getMovieByName(searchT, mainHtml);
+  mainHtml = await getMovieByActor(searchT, mainHtml);
+  // Add the html of the list to the main page
+  document.querySelector("main").innerHTML = mainHtml;
+  //TODO ne pas avoir deux fois le même film
 }
 
 // Initialize the main page
 getMovies();
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const searchTerm = search.value;
+  if (searchTerm) {
+    searchMovies(searchTerm);
+    search.value = "";
+  }
+});

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <script type="text/javascript" src="jquery-3.6.3.min.js"></script>
+</head>
+<body>
+    <script>
+        function connection() {
+            console.log("ok")
+            let login = document.getElementById("login").value;
+            let mdp = document.getElementById("passwd").value;
+            $.ajax({
+                method : "post",
+                url : "login",
+                data : {
+                    login : login,
+                    passwd : mdp,
+                },
+                dataType : "json",
+                success : function(data) {
+
+                    console.log("data = "+JSON.stringify(data))
+                    // message à afficher
+
+                    if (data.res) {
+                        document.getElementById("mess").textContent = "connecté";
+                        document.getElementById("mess").style = "color: green";
+                        document.getElementById("connection").hidden = true;
+                        document.getElementById("connecte").hidden = false;
+                        sessionStorage.setItem("login", data.login);
+                        console.log(JSON.stringify(sessionStorage))
+                        getFavori()
+                    }
+                    else {
+                        document.getElementById("mess").textContent = "non connecté";
+                        document.getElementById("mess").style = "color: red";
+                    }
+                }
+            })
+        }
+
+        function getFavori() {
+            $.ajax({
+                method : "post",
+                url : "get_favori",
+                data : {
+                    login : sessionStorage.getItem("login"),
+                },
+                dataType : "json",
+                success : function(data) {
+
+                    console.log("data = "+JSON.stringify(data))
+                    let listFavori = document.getElementById("favoris")
+                    listFavori.innerHTML = "";
+                    data.listFavori.map(favori => {
+                        console.log(JSON.stringify(favori))
+                        let li = document.createElement("li")
+                        li.innerText = favori.idfilm
+                        listFavori.appendChild(li)
+                    })
+                }
+            })
+        }
+
+        function deconnection() {
+            document.getElementById("connection").hidden = false;
+            document.getElementById("connecte").hidden = true;
+            sessionStorage.removeItem("login")
+        }
+    </script>
+    <div id="connection">
+        <label>login:</label>
+        <input id="login" type="text"/>
+        <label>password:</label>
+        <input id="passwd" type="text"/>
+        <button onclick="connection()">connection</button>
+        <p id="mess"></p>
+    </div>
+    <div id="connecte" hidden="true">
+        <ul id="favoris"></ul>
+        <button onclick="deconnection()">deconnection</button>
+    </div>
+</body>
+</html>

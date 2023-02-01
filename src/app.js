@@ -3,6 +3,7 @@ const API_KEY = "api_key=04c35731a5ee918f014970082a0088b1";
 const API_CRITERIA = "short_by=popularity.desc&page=1";
 const API_KEY_AND_CRITERIA = `${API_KEY}&${API_CRITERIA}`;
 
+
 async function getMovies() {
   const response = await fetch(
     `${API_URL}discover/movie?${API_KEY_AND_CRITERIA}`

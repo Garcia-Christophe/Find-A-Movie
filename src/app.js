@@ -86,7 +86,7 @@ async function getMovies() {
   }
 
   // Add the html of the list to the main page
-  document.querySelector("main").innerHTML = mainHtml;
+  document.getElementById("movies").innerHTML = mainHtml;
 }
 
 // Get the list of movies by its name

@@ -3,7 +3,7 @@ const database = require('./database')
 const util = require("util");
 
 var app = express();
-app.use("/", express.static("../html", { index: 'index.html' }))
+app.use("/", express.static("..", { index: 'html/index.html' }))
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ extended: true }))
 
@@ -11,7 +11,7 @@ var server = app.listen(3000, function () {
     console.log('Express server listening on port 3000')
 });
 
-app.post("/login", function (req, res) {
+app.post("/html/login", function (req, res) {
 
     new Promise((resolve, reject) => {
         database.getUsers(resolve, reject)
@@ -28,7 +28,7 @@ app.post("/login", function (req, res) {
     })
 })
 
-app.post("/get_favori", function(req, res) {
+app.post("/html/get_favori", function(req, res) {
     new Promise((resolve, reject) => {
         database.getFavori(req.body.login, resolve, reject);
     }).then((data) => {
@@ -38,7 +38,7 @@ app.post("/get_favori", function(req, res) {
     })
 })
 
-app.post("/del_favori", function(req, res) {
+app.post("/html/del_favori", function(req, res) {
     new Promise((resolve, reject) => {
         database.delFavori(req.body.login, req.body.idFilm, resolve, reject);
     }).then((data) => {
@@ -46,7 +46,7 @@ app.post("/del_favori", function(req, res) {
     })
 })
 
-app.post("/add_favori", function(req, res) {
+app.post("/html/add_favori", function(req, res) {
     new Promise((resolve, reject) => {
         database.addFavori(req.body.login, req.body.idFilm, resolve, reject);
     }).then((data) => {
@@ -54,7 +54,7 @@ app.post("/add_favori", function(req, res) {
     })
 })
 
-app.post("/modif_passwd", function(req, res) {
+app.post("/html/modif_passwd", function(req, res) {
     new Promise((resolve, reject) => {
         database.updateUserPasswd(req.body.login, req.body.passwd, resolve, reject);
     }).then((data) => {

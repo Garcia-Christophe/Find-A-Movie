@@ -1,146 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>login</title>
-    <link rel="stylesheet" href="../styles/style.css" />
-    <script type="text/javascript" src="jquery-3.6.3.min.js"></script>
-</head>
-<body>
-    <script>
-        function connection() {
-            let login = document.getElementById("login").value;
-            let mdp = document.getElementById("passwd").value;
-            $.ajax({
-                method : "post",
-                url : "login",
-                data : {
-                    login : login,
-                    passwd : mdp,
-                },
-                dataType : "json",
-                success : function(data) {
-
-                    // message à afficher
-
-                    if (data.res) {
-                        document.getElementById("mess").textContent = "connecté";
-                        document.getElementById("mess").style = "color: green";
-                        document.getElementById("connection").hidden = true;
-                        document.getElementById("connecte").hidden = false;
-                        sessionStorage.setItem("login", data.login);
-                        getFavori()
-                    }
-                    else {
-                        document.getElementById("mess").textContent = "non connecté";
-                        document.getElementById("mess").style = "color: red";
-                    }
-                }
-            })
-        }
-
-        function getFavori() {
-            $.ajax({
-                method : "post",
-                url : "get_favori",
-                data : {
-                    login : sessionStorage.getItem("login"),
-                },
-                dataType : "json",
-                success : function(data) {
-
-                    let listFavori = document.getElementById("favoris")
-                    listFavori.innerHTML = "";
-                    data.listFavori.map(favori => {
-                        let li = document.createElement("li")
-                        li.innerText = favori.idfilm
-                        li.id = favori.idfilm
-                        let button = document.createElement("button")
-                        button.innerText = "suppr"
-                        button.addEventListener("click", () => {
-                            sessionStorage.setItem("film", favori.idfilm)
-                            delFavori()
-                        })
-                        li.appendChild(button)
-                        listFavori.appendChild(li)
-                    })
-                }
-            })
-        }
-
-        function addFavori() {
-            let film = document.getElementById("add").value
-            $.ajax({
-                method : "post",
-                url : "add_favori",
-                data : {
-                    login : sessionStorage.getItem("login"),
-                    idFilm : film,
-                },
-                dataType : "json",
-                success : function(data) {
-                    getFavori()
-                }
-            })
-        }
-
-        function delFavori() {
-            $.ajax({
-                method : "post",
-                url : "del_favori",
-                data : {
-                    login : sessionStorage.getItem("login"),
-                    idFilm : sessionStorage.getItem("film"),
-                },
-                dataType : "json",
-                success : function(data) {
-                    sessionStorage.removeItem("film")
-                    getFavori()
-                }
-            })
-        }
-
-        function modifPasswd() {
-            $.ajax({
-                method : "post",
-                url : "modif_passwd",
-                data : {
-                    login : sessionStorage.getItem("login"),
-                    passwd : document.getElementById("modif_passwd").value,
-                },
-                dataType : "json",
-                success : function(data) {
-                    console.log("modifier")
-                }
-            })
-        }
-
-        function deconnection() {
-            document.getElementById("connection").hidden = false;
-            document.getElementById("connecte").hidden = true;
-            sessionStorage.removeItem("login")
-        }
-
-        sessionStorage.clear()
-    </script>
-    <a href="./index.html"><button>accueil</button></a>
-    <div id="connection">
-        <label>login:</label>
-        <input id="login" type="text"/>
-        <label>password:</label>
-        <input id="passwd" type="text"/>
-        <button onclick="connection()">connection</button>
-        <p id="mess"></p>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../styles/colors.css" />
+    <link rel="stylesheet" href="../styles/login.css" />
+  </head>
+  <body>
+    <div id="container">
+      <form action="signin" method="POST" id="signin">
+        <h1>Connection</h1>
+        <label><b>Login</b></label>
+        <input type="text" placeholder="Enter login" name="username" required />
+        <label><b>Password</b></label>
+        <input
+          type="password"
+          placeholder="Enter password"
+          name="password"
+          required
+        />
+        <input type="submit" id="submit" value="LOGIN" />
+      </form>
     </div>
-    <div id="connecte" hidden="true">
-        <button onclick="deconnection()">deconnection</button>
-        <ul id="favoris"></ul>
-        <label>ajouter un film</label>
-        <input id="add"/>
-        <button onclick="addFavori()">ajouter</button><br/>
-        <label>modification du mot de passe</label>
-        <input id="modif_passwd"/>
-        <button onclick="modifPasswd()">modifier</button><br/>
-    </div>
-</body>
+  </body>
 </html>

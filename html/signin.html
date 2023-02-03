@@ -1,44 +1,29 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <title>Sign in</title>
     <script type="text/javascript" src="jquery-3.6.3.min.js"></script>
+    <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/sign.css" />
-    <script>
-      function connection() {
-        let login = document.getElementById("login").value;
-        let mdp = document.getElementById("passwd").value;
-        $.ajax({
-          method : "post",
-          url : "login",
-          data : {
-            login : login,
-            passwd : mdp,
-          },
-          dataType : "json",
-          success : function(data) {
-
-            // message à afficher
-
-            if (data.res) {
-              console.log("connecté")
-              sessionStorage.setItem("login", data.login);
-              document.location.href="/html/myCollection.html"
-            }
-            else {
-              console.log("echec de connection")
-            }
-          }
-        })
-      }
-
-      function signup() {
-        document.location.href = "/html/signup.html"
-      }
-    </script>
+    <script type="text/javascript" src="../src/script.js"></script>
   </head>
   <body>
+    <header>
+      <nav class="navbar">
+        <div>
+          <img id="logo" src="../data/logo.png" />
+        </div>
+        <div class="button">
+          <ul>
+            <li>
+              <a href="index.html">Back</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
     <div id="container">
-      <div class="form">
+      <div class="form" id="connection">
         <h1>Sign In</h1>
         <label><b>Login</b></label>
         <input type="text" placeholder="Enter login" id="login" required />
@@ -49,8 +34,7 @@
           id="passwd"
           required
         />
-        <input type="submit" onclick="connection()" />
-        <button onclick="signup()">créer un compte</button>
+        <input type="submit" onclick="connection()" value="Sign in" />
       </div>
     </div>
   </body>

@@ -38,7 +38,6 @@ async function getRuntime(id) {
   return runtimeString;
 }
 
-
 // Get the html for a movie
 function getMovieHtml(movie, director, runtime) {
   return `<div class="movie">
@@ -67,6 +66,16 @@ function getMovieHtml(movie, director, runtime) {
             <p>${movie.release_date}</p>
             <h3>Overview:</h3>
             <p>${movie.overview}</p>
+            <h3>Actions:</h3>
+            <div class="action-buttons">
+              <button class="btn" onclick="console.log('add')">
+                <i class="fa fa-plus"></i> Add to my collection
+              </button>
+              <div>&nbsp;</div>
+              <button class="btn" onclick="console.log('delete')">
+                <i class="fa fa-minus"></i> Delete from my collection
+              </button>
+            </div>
           </div>
       </div>`;
 }

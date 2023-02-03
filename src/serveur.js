@@ -61,3 +61,19 @@ app.post("/html/modif_passwd", function(req, res) {
         res.send({});
     })
 })
+
+app.post("/html/add_user", function(req, res) {
+    new Promise((resolve, reject) => {
+        database.addUser(req.body.login, req.body.passwd, resolve, reject);
+    }).then((data) => {
+        res.send({});
+    })
+})
+
+app.post("/html/del_user", function(req, res) {
+    new Promise((resolve, reject) => {
+        database.delUser(req.body.login, resolve, reject);
+    }).then((data) => {
+        res.send({});
+    })
+})

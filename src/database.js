@@ -19,7 +19,7 @@ function getUsers(resolve, reject){
         });
     });
 }
-function addUser(login, passwd) {
+function addUser(login, passwd, resolve, reject) {
     var client = new pg.Client(conString);
     client.connect(function(err) {
         if(err) {
@@ -27,14 +27,16 @@ function addUser(login, passwd) {
         }
         client.query("insert into public.user (login, password) values ('" + login + "', '" + passwd + "')", function(err, result) {
             if(err) {
-                return console.error('error running query', err);
+                return reject(err);
             }
+            console.log("ok")
+            resolve()
             client.end();
         });
     });
 }
 
-function delUser(login) {
+function delUser(login, resolve, reject) {
     var client = new pg.Client(conString);
     client.connect(function (err) {
         if (err) {
@@ -42,8 +44,9 @@ function delUser(login) {
         }
         client.query("delete from public.user where login='" + login + "'", function (err, result) {
             if (err) {
-                return console.error('error running query', err);
+                return reject(err);
             }
+            resolve()
             client.end();
         });
     });
@@ -120,6 +123,8 @@ function addFavori(login, film, resolve, reject){
 
 module.exports = {
     getUsers: getUsers,
+    addUser: addUser,
+    delUser: delUser,
     updateUserPasswd: updateUserPasswd,
     getFavori : getFavori,
     addFavori : addFavori,

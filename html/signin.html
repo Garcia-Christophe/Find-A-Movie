@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="jquery-3.6.3.min.js"></script>
+    <link rel="stylesheet" href="../styles/sign.css" />
+    <script>
+      function connection() {
+        let login = document.getElementById("login").value;
+        let mdp = document.getElementById("passwd").value;
+        $.ajax({
+          method : "post",
+          url : "login",
+          data : {
+            login : login,
+            passwd : mdp,
+          },
+          dataType : "json",
+          success : function(data) {
+
+            // message à afficher
+
+            if (data.res) {
+              console.log("connecté")
+              sessionStorage.setItem("login", data.login);
+              document.location.href="/html/myCollection.html"
+            }
+            else {
+              console.log("echec de connection")
+            }
+          }
+        })
+      }
+
+      function signup() {
+        document.location.href = "/html/signup.html"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <div class="form">
+        <h1>Sign In</h1>
+        <label><b>Login</b></label>
+        <input type="text" placeholder="Enter login" id="login" required />
+        <label><b>Password</b></label>
+        <input
+          type="password"
+          placeholder="Enter password"
+          id="passwd"
+          required
+        />
+        <input type="submit" onclick="connection()" />
+        <button onclick="signup()">créer un compte</button>
+      </div>
+    </div>
+  </body>
+</html>

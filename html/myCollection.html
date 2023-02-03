@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Find a Movie - My Collection</title>
+    <script type="text/javascript" src="jquery-3.6.3.min.js"></script>
+    <link rel="stylesheet" href="../styles/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="../src/myCollection.js"></script>
+    <script>
+      function getFavori() {
+        $.ajax({
+          method : "post",
+          url : "get_favori",
+          data : {
+            login : sessionStorage.getItem("login"),
+          },
+          dataType : "json",
+          success : function(data) {
+            data.listFavori.map(favori => {
+              console.log(favori)
+              affFilm(favori.idfilm)
+            })
+          }
+        })
+      }
+
+      async function affFilm(id) {
+        const response = await fetch(
+                `${API_URL}movie/${id}?${API_KEY}`
+        );
+        const movie = await response.json();
+
+        // Get the director and runtime of each movie
+        let directors = []
+        let runtimes = []
+        let director = await getDirector(movie.id);
+        let runtime = await getRuntime(movie.id);
+        directors.push(director);
+        runtimes.push(runtime);
+
+        let mainHtml = "";
+        mainHtml += getMovieHtml(movie, directors, runtimes);
+
+        // Add the html of the list to the main page
+        document.getElementById("favoris").appendChild(new DOMParser().parseFromString(mainHtml, "text/html").body.firstElementChild);
+      }
+
+      function signout() {
+        console.log("signout")
+        sessionStorage.removeItem("login");
+        document.location.href = "/html/signin.html"
+      }
+
+      getFavori();
+    </script>
+  </head>
+  <body>
+    <h1 class="page-title">My collection</h1>
+    <main>
+      <button onclick="signout()">deconnection</button>
+      <div id="favoris">
+      </div>
+    </main>
+  </body>
+</html>

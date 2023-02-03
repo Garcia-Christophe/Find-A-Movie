@@ -5,13 +5,13 @@
 }
 
 body {
-  background-color: darkblue;
+  background-color: var(--secondary);
   font-family: "Poppins", sans-serif;
   margin: 0;
 }
 
 .page-title {
-  color: white;
+  color: var(--white);
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: 1px;
@@ -22,7 +22,7 @@ body {
 }
 
 .navbar {
-  background-color: #373b69;
+  background-color: var(--primary);
   display: flex;
   justify-content: space-between;
   position: fixed;
@@ -30,7 +30,7 @@ body {
   width: 100%;
   height: 10%;
   z-index: 10;
-  color: white;
+  color: var(--white);
   padding: 1px;
 }
 
@@ -51,9 +51,9 @@ body {
 
 .search {
   background-color: transparent;
-  border: 2px solid #22254b;
+  border: 2px solid var(--functionnal-grey);
   border-radius: 50px;
-  color: #fff;
+  color: var(--white);
   font-family: inherit;
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -61,11 +61,11 @@ body {
 }
 
 .search::placeholder {
-  color: #7378c5;
+  color: var(--functionnal-grey);
 }
 
 .search:focus {
-  background-color: #22254b;
+  background-color: var(--functionnal-grey);
   outline: none;
 }
 
@@ -87,7 +87,7 @@ body {
 
 .navbar ul li a {
   text-decoration: none;
-  color: white;
+  color: var(--white);
   font-weight: bold;
   height: 100%;
   display: flex;
@@ -97,7 +97,7 @@ body {
 
 .navbar ul li a:hover {
   text-decoration: none;
-  color: black;
+  color: var(--tertiary);
   font-weight: bold;
 }
 main {
@@ -108,7 +108,7 @@ main {
 }
 
 .movie {
-  background-color: blue;
+  background-color: var(--primary);
   border-radius: 3px;
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
   width: 300px;
@@ -131,7 +131,7 @@ main {
 }
 
 .movie-info1 {
-  color: white;
+  color: var(--white);
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1rem 1rem;
@@ -140,7 +140,7 @@ main {
 }
 
 .movie-info2 {
-  color: white;
+  color: var(--tertiary);
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1rem 1rem;
@@ -153,7 +153,7 @@ main {
 }
 
 .movie-info1 span {
-  background-color: darkblue;
+  background-color: var(--secondary);
   border-radius: 3px;
   font-weight: bold;
   padding: 0.25rem 0.5rem;
@@ -161,20 +161,20 @@ main {
 }
 
 .movie-info1 span.green {
-  color: green;
+  color: var(--green);
 }
 
 .movie-info1 span.orange {
-  color: orange;
+  color: var(--orange);
 }
 
 .movie-info1 span.red {
-  color: red;
+  color: var(--red);
 }
 
 .overview {
-  background-color: white;
-  color: black;
+  background-color: var(--white);
+  color: var(--black);
   padding: 2rem;
   position: absolute;
   bottom: 0;
@@ -200,7 +200,7 @@ main {
 }
 
 .btn {
-  background-color: DodgerBlue;
+  background-color: var(--functionnal-grey);
   border: none;
   color: white;
   padding: 10px 10px;
@@ -211,5 +211,5 @@ main {
 }
 
 .btn:hover {
-  background-color: RoyalBlue;
+  background-color: var(--tertiary);
 }

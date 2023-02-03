@@ -5,13 +5,13 @@
 }
 
 body {
-  background-color: darkblue;
+  background-color: var(--secondary);
   font-family: "Poppins", sans-serif;
   margin: 0;
 }
 
 .navbar {
-  background-color: #373b69;
+  background-color: var(--primary);
   display: flex;
   justify-content: space-between;
   position: fixed;
@@ -19,7 +19,7 @@ body {
   width: 100%;
   height: 10%;
   z-index: 10;
-  color: white;
+  color: var;
   padding: 1px;
 }
 
@@ -40,9 +40,9 @@ body {
 
 .search {
   background-color: transparent;
-  border: 2px solid #22254b;
+  border: 2px solid var(--functionnal-grey);
   border-radius: 50px;
-  color: #fff;
+  color: var(--white);
   font-family: inherit;
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -50,11 +50,11 @@ body {
 }
 
 .search::placeholder {
-  color: #7378c5;
+  color: var(--functionnal-grey);
 }
 
 .search:focus {
-  background-color: #22254b;
+  background-color: var(--white);
   outline: none;
 }
 
@@ -76,7 +76,7 @@ body {
 
 .navbar ul li a {
   text-decoration: none;
-  color: white;
+  color: var(--white);
   font-weight: bold;
   height: 100%;
   display: flex;
@@ -86,7 +86,7 @@ body {
 
 .navbar ul li a:hover {
   text-decoration: none;
-  color: black;
+  color: var(--tertiary);
   font-weight: bold;
 }
 

@@ -97,7 +97,7 @@ body {
 }
 
 /* Bordered form */
-form {
+.form {
   width: 100%;
   padding: 30px;
   border: 1px solid var(--primary);

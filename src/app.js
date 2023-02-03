@@ -66,6 +66,16 @@ function getMovieHtml(movie, director, runtime) {
             <p>${movie.release_date}</p>
             <h3>Overview:</h3>
             <p>${movie.overview}</p>
+            <h3>Actions:</h3>
+            <div class="action-buttons">
+              <button class="btn" onclick="console.log('add')">
+                <i class="fa fa-plus"></i> Add to my collection
+              </button>
+              <div>&nbsp;</div>
+              <button class="btn" onclick="console.log('delete')">
+                <i class="fa fa-minus"></i> Delete from my collection
+              </button>
+            </div>
           </div>
       </div>`;
 }
@@ -94,7 +104,7 @@ async function getMovies() {
   }
 
   // Add the html of the list to the main page
-  document.querySelector("main").innerHTML = mainHtml;
+  document.getElementById("movies").innerHTML = mainHtml;
 }
 
 // Get the list of movies by its name

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Find a Movie - My Collection</title>
+    <script type="text/javascript" src="jquery-3.6.3.min.js"></script>
     <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/index.css" />
     <link
@@ -10,6 +11,56 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <script src="../src/myCollection.js"></script>
+    <script>
+      function getFavori() {
+        $.ajax({
+          method: "post",
+          url: "get_favori",
+          data: {
+            login: sessionStorage.getItem("login"),
+          },
+          dataType: "json",
+          success: function (data) {
+            data.listFavori.map((favori) => {
+              console.log(favori);
+              affFilm(favori.idfilm);
+            });
+          },
+        });
+      }
+
+      async function affFilm(id) {
+        const response = await fetch(`${API_URL}movie/${id}?${API_KEY}`);
+        const movie = await response.json();
+
+        // Get the director and runtime of each movie
+        let directors = [];
+        let runtimes = [];
+        let director = await getDirector(movie.id);
+        let runtime = await getRuntime(movie.id);
+        directors.push(director);
+        runtimes.push(runtime);
+
+        let mainHtml = "";
+        mainHtml += getMovieHtml(movie, directors, runtimes);
+
+        // Add the html of the list to the main page
+        document
+          .getElementById("favoris")
+          .appendChild(
+            new DOMParser().parseFromString(mainHtml, "text/html").body
+              .firstElementChild
+          );
+      }
+
+      function signout() {
+        console.log("signout");
+        sessionStorage.removeItem("login");
+        document.location.href = "signin.html";
+      }
+
+      getFavori();
+    </script>
   </head>
   <body>
     <header>
@@ -31,126 +82,8 @@
     </header>
     <h1 class="page-title">My collection</h1>
     <main>
-      <div class="movie">
-        <img
-          src="https://static.posters.cz/image/750/affiches-et-posters/harry-potter-7-part-2-teaser-i11030.jpg"
-          alt="Harry Potter and the Deathly Hallows: Part 2"
-        />
-        <div class="movie-info">
-          <div class="movie-info1">
-            <h3>Harry Potter and the Deathly Hallows: Part 2</h3>
-            <span class="green">8.5</span>
-          </div>
-          <div class="movie-info2">
-            <span>David Yates</span>
-            <span>2h 10m</span>
-          </div>
-        </div>
-        <div class="overview">
-          <h3>Release date:</h3>
-          <p>13-07-2011</p>
-          <h3>Overview:</h3>
-          <p>
-            Dans la deuxième partie de cette finale épique, la bataille entre
-            les forces du bien et celles du mal du monde des magiciens dégénère
-            en une guerre tous azimuts. Les enjeux n'ont jamais été si grands et
-            personne n'est en sécurité. Mais c'est peut-être Harry Potter qui
-            pourrait être appelé à faire le sacrifice ultime alors qu'il se
-            rapproche de la confrontation tant attendue avec Lord Voldemort.
-            Tout se termine ici.
-          </p>
-          <h3>Actions:</h3>
-          <div class="action-buttons">
-            <button class="btn" onclick="console.log('add')">
-              <i class="fa fa-plus"></i> Add to my collection
-            </button>
-            <div>&nbsp;</div>
-            <button class="btn" onclick="console.log('delete')">
-              <i class="fa fa-minus"></i> Delete from my collection
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="movie">
-        <img
-          src="https://static.posters.cz/image/750/affiches-et-posters/harry-potter-7-part-2-teaser-i11030.jpg"
-          alt="Harry Potter and the Deathly Hallows: Part 2"
-        />
-        <div class="movie-info">
-          <div class="movie-info1">
-            <h3>Harry Potter and the Deathly Hallows: Part 2</h3>
-            <span class="green">8.5</span>
-          </div>
-          <div class="movie-info2">
-            <span>David Yates</span>
-            <span>2h 10m</span>
-          </div>
-        </div>
-        <div class="overview">
-          <h3>Release date:</h3>
-          <p>13-07-2011</p>
-          <h3>Overview:</h3>
-          <p>
-            Dans la deuxième partie de cette finale épique, la bataille entre
-            les forces du bien et celles du mal du monde des magiciens dégénère
-            en une guerre tous azimuts. Les enjeux n'ont jamais été si grands et
-            personne n'est en sécurité. Mais c'est peut-être Harry Potter qui
-            pourrait être appelé à faire le sacrifice ultime alors qu'il se
-            rapproche de la confrontation tant attendue avec Lord Voldemort.
-            Tout se termine ici.
-          </p>
-          <h3>Actions:</h3>
-          <div class="action-buttons">
-            <button class="btn" onclick="console.log('add')">
-              <i class="fa fa-plus"></i> Add to my collection
-            </button>
-            <div>&nbsp;</div>
-            <button class="btn" onclick="console.log('delete')">
-              <i class="fa fa-minus"></i> Delete from my collection
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="movie">
-        <img
-          src="https://static.posters.cz/image/750/affiches-et-posters/harry-potter-7-part-2-teaser-i11030.jpg"
-          alt="Harry Potter and the Deathly Hallows: Part 2"
-        />
-        <div class="movie-info">
-          <div class="movie-info1">
-            <h3>Harry Potter and the Deathly Hallows: Part 2</h3>
-            <span class="green">8.5</span>
-          </div>
-          <div class="movie-info2">
-            <span>David Yates</span>
-            <span>2h 10m</span>
-          </div>
-        </div>
-        <div class="overview">
-          <h3>Release date:</h3>
-          <p>13-07-2011</p>
-          <h3>Overview:</h3>
-          <p>
-            Dans la deuxième partie de cette finale épique, la bataille entre
-            les forces du bien et celles du mal du monde des magiciens dégénère
-            en une guerre tous azimuts. Les enjeux n'ont jamais été si grands et
-            personne n'est en sécurité. Mais c'est peut-être Harry Potter qui
-            pourrait être appelé à faire le sacrifice ultime alors qu'il se
-            rapproche de la confrontation tant attendue avec Lord Voldemort.
-            Tout se termine ici.
-          </p>
-          <h3>Actions:</h3>
-          <div class="action-buttons">
-            <button class="btn" onclick="console.log('add')">
-              <i class="fa fa-plus"></i> Add to my collection
-            </button>
-            <div>&nbsp;</div>
-            <button class="btn" onclick="console.log('delete')">
-              <i class="fa fa-minus"></i> Delete from my collection
-            </button>
-          </div>
-        </div>
-      </div>
+      <button onclick="signout()">deconnection</button>
+      <div id="favoris"></div>
     </main>
   </body>
 </html>
